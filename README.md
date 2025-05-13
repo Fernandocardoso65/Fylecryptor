@@ -40,6 +40,6 @@ Aviso
 Guarde sua senha com segurança! Sem ela, não é possível recuperar os arquivos criptografados.
 
 Licença
-Distribuído sob a licença MIT. Veja LICENSE para mais detalhes.
+Distribuído sob a licença MIT.
 Contato
 Desenvolvido por Fernando Cardoso 
