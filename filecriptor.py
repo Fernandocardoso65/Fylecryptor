@@ -1,8 +1,9 @@
 import os
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from ttkbootstrap.dialogs import Messagebox
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -13,7 +14,7 @@ class FileCryptorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("FileCryptor")
-        self.root.geometry("500x480")  # Ajustado para novo botão
+        self.root.geometry("500x480")
         self.root.resizable(False, False)
 
         # Inicializa ttkbootstrap com tema padrão
@@ -89,14 +90,14 @@ class FileCryptorApp:
         if file_path:
             self.file_entry.delete(0, tk.END)
             self.file_entry.insert(0, file_path)
-            self.folder_entry.delete(0, tk.END)  # Limpa o campo de pasta
+            self.folder_entry.delete(0, tk.END)
 
     def select_folder(self):
         folder_path = filedialog.askdirectory()
         if folder_path:
             self.folder_entry.delete(0, tk.END)
             self.folder_entry.insert(0, folder_path)
-            self.file_entry.delete(0, tk.END)  # Limpa o campo de arquivo
+            self.file_entry.delete(0, tk.END)
 
     def generate_key(self, password):
         password = password.encode()
@@ -146,10 +147,10 @@ class FileCryptorApp:
         password = self.password_entry.get()
 
         if not (file_path or folder_path):
-            messagebox.showerror("Erro", "Selecione um arquivo ou pasta!", bootstyle="danger")
+            Messagebox.show_error("Selecione um arquivo ou pasta!", title="Erro", bootstyle="danger")
             return
         if not password:
-            messagebox.showerror("Erro", "Digite uma senha!", bootstyle="danger")
+            Messagebox.show_error("Digite uma senha!", title="Erro", bootstyle="danger")
             return
 
         try:
@@ -166,10 +167,10 @@ class FileCryptorApp:
                     if os.path.isfile(file_path):
                         results.append(self.encrypt_file(file_path, password, fernet))
 
-            messagebox.showinfo("Resultado", "\n".join(results) + "\n\nGuarde sua senha com segurança!",
-                                bootstyle="success")
+            Messagebox.show_info("\n".join(results) + "\n\nGuarde sua senha com segurança!", title="Resultado",
+                                 bootstyle="success")
         except Exception as e:
-            messagebox.showerror("Erro", f"Falha ao criptografar: {str(e)}", bootstyle="danger")
+            Messagebox.show_error(f"Falha ao criptografar: {str(e)}", title="Erro", bootstyle="danger")
 
     def decrypt(self):
         file_path = self.file_entry.get()
@@ -177,10 +178,10 @@ class FileCryptorApp:
         password = self.password_entry.get()
 
         if not (file_path or folder_path):
-            messagebox.showerror("Erro", "Selecione um arquivo ou pasta!", bootstyle="danger")
+            Messagebox.show_error("Selecione um arquivo ou pasta!", title="Erro", bootstyle="danger")
             return
         if not password:
-            messagebox.showerror("Erro", "Digite uma senha!", bootstyle="danger")
+            Messagebox.show_error("Digite uma senha!", title="Erro", bootstyle="danger")
             return
 
         try:
@@ -197,9 +198,9 @@ class FileCryptorApp:
                     if os.path.isfile(file_path) and file_path.endswith('.encrypted'):
                         results.append(self.decrypt_file(file_path, password, fernet))
 
-            messagebox.showinfo("Resultado", "\n".join(results), bootstyle="success")
+            Messagebox.show_info("\n".join(results), title="Resultado", bootstyle="success")
         except Exception as e:
-            messagebox.showerror("Erro", f"Falha ao descriptografar: {str(e)}", bootstyle="danger")
+            Messagebox.show_error(f"Falha ao descriptografar: {str(e)}", title="Erro", bootstyle="danger")
 
 
 if __name__ == "__main__":
